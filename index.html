@@ -8,114 +8,49 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.5/mqtt.min.js"></script>
 <style>
   :root {
-    --bg:     #0d1117;
-    --surf:   #161b22;
-    --surf2:  #21262d;
-    --border: #30363d;
-    --text:   #e6edf3;
-    --dim:    #8b949e;
-    --green:  #3fb950;
-    --yellow: #d29922;
-    --orange: #f0883e;
-    --red:    #f85149;
-    --blue:   #58a6ff;
-    --purple: #a78bfa;
+    --bg:#0d1117;--surf:#161b22;--surf2:#21262d;--border:#30363d;
+    --text:#e6edf3;--dim:#8b949e;--green:#3fb950;--yellow:#d29922;
+    --orange:#f0883e;--red:#f85149;--blue:#58a6ff;--purple:#a78bfa;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
-
-  /* ── Header ── */
-  header {
-    background: var(--surf);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-  }
-  header h1 { font-size: 1.1rem; color: var(--blue); letter-spacing: 1px; }
-  .hdr-right { display: flex; align-items: center; gap: 16px; font-size: .8rem; color: var(--dim); }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); display: inline-block; margin-right: 4px; }
-  .dot.on { background: var(--green); }
-
-  /* ── Tabs ── */
-  .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surf); padding: 0 24px; }
-  .tab { padding: 12px 20px; cursor: pointer; font-size: .85rem; color: var(--dim); border-bottom: 2px solid transparent; transition: .2s; }
-  .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
-  .tab-content { display: none; padding: 20px 24px; }
-  .tab-content.active { display: block; }
-
-  /* ── Kpi strip ── */
-  .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; margin-bottom: 20px; }
-  .kpi { background: var(--surf); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
-  .kpi .label { font-size: .7rem; color: var(--dim); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-  .kpi .value { font-size: 1.4rem; font-weight: 700; }
-
-  /* ── Grinzi vizuale ── */
-  .bridges-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
-  .bridge-card {
-    background: var(--surf2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
-    position: relative;
-  }
-  .bridge-card .bname { font-size: .75rem; color: var(--dim); margin-bottom: 8px; text-transform: uppercase; }
-  .bridge-svg { width: 100%; height: 80px; }
-  .bridge-card .bval { font-size: 1rem; font-weight: 700; margin-top: 6px; }
-  .bridge-card .beps { font-size: .75rem; color: var(--purple); margin-top: 2px; }
-
-  /* ── Charts grid ── */
-  .section-title { font-size: .8rem; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-  .charts-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .chart-card {
-    background: var(--surf);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 14px;
-  }
-  .chart-card .ctitle { font-size: .75rem; color: var(--dim); margin-bottom: 8px; }
-  .chart-card canvas { width: 100% !important; height: 120px !important; }
-
-  /* ── Alarma banner ── */
-  .alarm-banner {
-    display: none;
-    background: rgba(248,81,73,.15);
-    border: 1px solid var(--red);
-    border-radius: 8px;
-    padding: 14px 20px;
-    margin-bottom: 20px;
-    color: var(--red);
-    font-weight: 700;
-    font-size: 1rem;
-    text-align: center;
-    animation: pulse 1s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
-
-  /* ── Istoric ── */
-  .hist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .hist-card { background: var(--surf); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
-  .hist-card .htitle { font-size: .8rem; color: var(--dim); margin-bottom: 10px; text-transform: uppercase; }
-  .hist-card canvas { width: 100% !important; height: 180px !important; }
-
-  /* ── Env row ── */
-  .env-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-
-  /* ── Footer ── */
-  footer { text-align: center; padding: 16px; color: var(--dim); font-size: .75rem; border-top: 1px solid var(--border); margin-top: 20px; }
-
-  @media(max-width:700px){
-    .bridges-row { grid-template-columns: 1fr 1fr; }
-    .charts-2col { grid-template-columns: 1fr; }
-    .hist-grid { grid-template-columns: 1fr; }
-  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;min-height:100vh;}
+  header{background:var(--surf);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  header h1{font-size:1.1rem;color:var(--blue);letter-spacing:1px;}
+  .hdr-right{display:flex;align-items:center;gap:16px;font-size:.8rem;color:var(--dim);}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--dim);display:inline-block;margin-right:4px;}
+  .dot.on{background:var(--green);}
+  .tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surf);padding:0 24px;}
+  .tab{padding:12px 20px;cursor:pointer;font-size:.85rem;color:var(--dim);border-bottom:2px solid transparent;transition:.2s;}
+  .tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+  .tab-content{display:none;padding:20px 24px;}
+  .tab-content.active{display:block;}
+  .kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
+  .kpi{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+  .kpi .label{font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+  .kpi .value{font-size:1.4rem;font-weight:700;}
+  .bridges-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+  .bridge-card{background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
+  .bridge-card .bname{font-size:.75rem;color:var(--dim);margin-bottom:8px;text-transform:uppercase;}
+  .bridge-svg{width:100%;height:80px;}
+  .bridge-card .bval{font-size:1rem;font-weight:700;margin-top:6px;}
+  .bridge-card .beps{font-size:.75rem;color:var(--purple);margin-top:2px;}
+  .section-title{font-size:.8rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+  .charts-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  .chart-card{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+  .chart-card .ctitle{font-size:.75rem;color:var(--dim);margin-bottom:8px;}
+  .chart-card canvas{width:100%!important;height:120px!important;}
+  .alarm-banner{display:none;background:rgba(248,81,73,.15);border:1px solid var(--red);border-radius:8px;padding:14px 20px;margin-bottom:20px;color:var(--red);font-weight:700;font-size:1rem;text-align:center;animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+  .hist-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .hist-card{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:14px;}
+  .hist-card .htitle{font-size:.8rem;color:var(--dim);margin-bottom:10px;text-transform:uppercase;}
+  .hist-card canvas{width:100%!important;height:180px!important;}
+  .env-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  footer{text-align:center;padding:16px;color:var(--dim);font-size:.75rem;border-top:1px solid var(--border);margin-top:20px;}
+  @media(max-width:700px){.bridges-row{grid-template-columns:1fr 1fr;}.charts-2col{grid-template-columns:1fr;}.hist-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-
 <header>
   <h1>⚙ BRIDGE STRUCTURAL MONITOR</h1>
   <div class="hdr-right">
@@ -123,62 +58,36 @@
     <span id="lastUpd">--</span>
   </div>
 </header>
-
 <div class="tabs">
   <div class="tab active" onclick="switchTab('home',this)">HOME</div>
   <div class="tab" onclick="switchTab('istoric',this)">ISTORIC</div>
 </div>
 
-<!-- ══════════ HOME ══════════ -->
+<!-- HOME -->
 <div class="tab-content active" id="home">
-
-  <!-- Alarma -->
   <div class="alarm-banner" id="alarmBanner">⚠ ALARMA! PRAG CRITIC 20 kg DEPASIT ⚠</div>
 
-  <!-- KPI strip -->
   <div class="kpi-strip">
-    <div class="kpi">
-      <div class="label">Forta totala</div>
-      <div class="value" id="kpiKg" style="color:var(--green)">-- kg</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Tensiune σ</div>
-      <div class="value" id="kpiSigma" style="color:var(--blue)">-- kgF/cm²</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Deformatie ε</div>
-      <div class="value" id="kpiEps" style="color:var(--purple)">-- με</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Temperatura</div>
-      <div class="value" id="kpiTemp" style="color:var(--blue)">-- °C</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Umiditate</div>
-      <div class="value" id="kpiHum" style="color:var(--blue)">-- %</div>
-    </div>
+    <div class="kpi"><div class="label">Forta totala</div><div class="value" id="kpiKg" style="color:var(--green)">-- kg</div></div>
+    <div class="kpi"><div class="label">Tensiune σ</div><div class="value" id="kpiSigma" style="color:var(--blue)">-- kgF/cm²</div></div>
+    <div class="kpi"><div class="label">Deformatie ε</div><div class="value" id="kpiEps" style="color:var(--purple)">-- με</div></div>
+    <div class="kpi"><div class="label">Temperatura</div><div class="value" id="kpiTemp" style="color:var(--blue)">-- °C</div></div>
+    <div class="kpi"><div class="label">Umiditate</div><div class="value" id="kpiHum" style="color:var(--blue)">-- %</div></div>
   </div>
 
-  <!-- Vizualizare 4 grinzi -->
   <div class="section-title">Reprezentare grinzi</div>
+  <!-- ORDINE: G1, G3, G2, G4 -->
   <div class="bridges-row">
+    <!-- Grinda 1 — date g1 -->
     <div class="bridge-card" id="bc0">
       <div class="bname">Grinda 1</div>
-      <svg class="bridge-svg" viewBox="0 0 120 80" id="svg0">
-        <!-- grinda -->
+      <svg class="bridge-svg" viewBox="0 0 120 80">
         <rect x="5" y="30" width="110" height="18" rx="3" fill="#21262d" stroke="#30363d" stroke-width="1.5"/>
-        <!-- marca tensometrica -->
         <rect x="52" y="33" width="16" height="12" rx="2" fill="#58a6ff" opacity="0.7"/>
         <line x1="60" y1="33" x2="60" y2="45" stroke="#e6edf3" stroke-width="1"/>
         <line x1="54" y1="39" x2="66" y2="39" stroke="#e6edf3" stroke-width="1"/>
-        <!-- sageti forta -->
-        <line id="arr0" x1="60" y1="10" x2="60" y2="28" stroke="#3fb950" stroke-width="2" marker-end="url(#arrowG)"/>
-        <defs>
-          <marker id="arrowG" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#3fb950"/>
-          </marker>
-        </defs>
-        <!-- reazeme -->
+        <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3fb950"/></marker></defs>
+        <line id="arr0" x1="60" y1="10" x2="60" y2="28" stroke="#3fb950" stroke-width="2" marker-end="url(#arr)"/>
         <polygon points="5,48 15,65 -5,65" fill="#30363d"/>
         <polygon points="115,48 125,65 105,65" fill="#30363d"/>
         <line x1="-10" y1="65" x2="130" y2="65" stroke="#30363d" stroke-width="2"/>
@@ -186,29 +95,15 @@
       <div class="bval" id="bv0" style="color:var(--green)">0.00 kg</div>
       <div class="beps" id="be0">ε = 0.000 με</div>
     </div>
-    <div class="bridge-card" id="bc1">
-      <div class="bname">Grinda 2</div>
-      <svg class="bridge-svg" viewBox="0 0 120 80" id="svg1">
-        <rect x="5" y="30" width="110" height="18" rx="3" fill="#21262d" stroke="#30363d" stroke-width="1.5"/>
-        <rect x="52" y="33" width="16" height="12" rx="2" fill="#58a6ff" opacity="0.7"/>
-        <line x1="60" y1="33" x2="60" y2="45" stroke="#e6edf3" stroke-width="1"/>
-        <line x1="54" y1="39" x2="66" y2="39" stroke="#e6edf3" stroke-width="1"/>
-        <line id="arr1" x1="60" y1="10" x2="60" y2="28" stroke="#3fb950" stroke-width="2" marker-end="url(#arrowG)"/>
-        <polygon points="5,48 15,65 -5,65" fill="#30363d"/>
-        <polygon points="115,48 125,65 105,65" fill="#30363d"/>
-        <line x1="-10" y1="65" x2="130" y2="65" stroke="#30363d" stroke-width="2"/>
-      </svg>
-      <div class="bval" id="bv1" style="color:var(--green)">0.00 kg</div>
-      <div class="beps" id="be1">ε = 0.000 με</div>
-    </div>
+    <!-- Grinda 3 — date g3 (pozitia 2 vizuala) -->
     <div class="bridge-card" id="bc2">
-      <div class="bname">Grinda 3</div>
-      <svg class="bridge-svg" viewBox="0 0 120 80" id="svg2">
+      <div class="bname">Grinda 2</div>
+      <svg class="bridge-svg" viewBox="0 0 120 80">
         <rect x="5" y="30" width="110" height="18" rx="3" fill="#21262d" stroke="#30363d" stroke-width="1.5"/>
         <rect x="52" y="33" width="16" height="12" rx="2" fill="#58a6ff" opacity="0.7"/>
         <line x1="60" y1="33" x2="60" y2="45" stroke="#e6edf3" stroke-width="1"/>
         <line x1="54" y1="39" x2="66" y2="39" stroke="#e6edf3" stroke-width="1"/>
-        <line id="arr2" x1="60" y1="10" x2="60" y2="28" stroke="#3fb950" stroke-width="2" marker-end="url(#arrowG)"/>
+        <line id="arr2" x1="60" y1="10" x2="60" y2="28" stroke="#3fb950" stroke-width="2" marker-end="url(#arr)"/>
         <polygon points="5,48 15,65 -5,65" fill="#30363d"/>
         <polygon points="115,48 125,65 105,65" fill="#30363d"/>
         <line x1="-10" y1="65" x2="130" y2="65" stroke="#30363d" stroke-width="2"/>
@@ -216,14 +111,31 @@
       <div class="bval" id="bv2" style="color:var(--green)">0.00 kg</div>
       <div class="beps" id="be2">ε = 0.000 με</div>
     </div>
-    <div class="bridge-card" id="bc3">
-      <div class="bname">Grinda 4</div>
-      <svg class="bridge-svg" viewBox="0 0 120 80" id="svg3">
+    <!-- Grinda 2 — date g2 (pozitia 3 vizuala) -->
+    <div class="bridge-card" id="bc1">
+      <div class="bname">Grinda 3</div>
+      <svg class="bridge-svg" viewBox="0 0 120 80">
         <rect x="5" y="30" width="110" height="18" rx="3" fill="#21262d" stroke="#30363d" stroke-width="1.5"/>
         <rect x="52" y="33" width="16" height="12" rx="2" fill="#58a6ff" opacity="0.7"/>
         <line x1="60" y1="33" x2="60" y2="45" stroke="#e6edf3" stroke-width="1"/>
         <line x1="54" y1="39" x2="66" y2="39" stroke="#e6edf3" stroke-width="1"/>
-        <line id="arr3" x1="60" y1="10" x2="60" y2="28" stroke="#3fb950" stroke-width="2" marker-end="url(#arrowG)"/>
+        <line id="arr1" x1="60" y1="10" x2="60" y2="28" stroke="#3fb950" stroke-width="2" marker-end="url(#arr)"/>
+        <polygon points="5,48 15,65 -5,65" fill="#30363d"/>
+        <polygon points="115,48 125,65 105,65" fill="#30363d"/>
+        <line x1="-10" y1="65" x2="130" y2="65" stroke="#30363d" stroke-width="2"/>
+      </svg>
+      <div class="bval" id="bv1" style="color:var(--green)">0.00 kg</div>
+      <div class="beps" id="be1">ε = 0.000 με</div>
+    </div>
+    <!-- Grinda 4 — date g4 -->
+    <div class="bridge-card" id="bc3">
+      <div class="bname">Grinda 4</div>
+      <svg class="bridge-svg" viewBox="0 0 120 80">
+        <rect x="5" y="30" width="110" height="18" rx="3" fill="#21262d" stroke="#30363d" stroke-width="1.5"/>
+        <rect x="52" y="33" width="16" height="12" rx="2" fill="#58a6ff" opacity="0.7"/>
+        <line x1="60" y1="33" x2="60" y2="45" stroke="#e6edf3" stroke-width="1"/>
+        <line x1="54" y1="39" x2="66" y2="39" stroke="#e6edf3" stroke-width="1"/>
+        <line id="arr3" x1="60" y1="10" x2="60" y2="28" stroke="#3fb950" stroke-width="2" marker-end="url(#arr)"/>
         <polygon points="5,48 15,65 -5,65" fill="#30363d"/>
         <polygon points="115,48 125,65 105,65" fill="#30363d"/>
         <line x1="-10" y1="65" x2="130" y2="65" stroke="#30363d" stroke-width="2"/>
@@ -233,326 +145,169 @@
     </div>
   </div>
 
-  <!-- Grafice Forta kg — 2 pe rand -->
   <div class="section-title">Grafice forta live [kg]</div>
   <div class="charts-2col">
-    <div class="chart-card">
-      <div class="ctitle">G1 — Forta [kg]</div>
-      <canvas id="lkg0"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="ctitle">G2 — Forta [kg]</div>
-      <canvas id="lkg1"></canvas>
-    </div>
+    <div class="chart-card"><div class="ctitle">G1 — Forta [kg]</div><canvas id="lkg0"></canvas></div>
+    <div class="chart-card"><div class="ctitle">G2 — Forta [kg]</div><canvas id="lkg1"></canvas></div>
   </div>
   <div class="charts-2col">
-    <div class="chart-card">
-      <div class="ctitle">G3 — Forta [kg]</div>
-      <canvas id="lkg2"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="ctitle">G4 — Forta [kg]</div>
-      <canvas id="lkg3"></canvas>
-    </div>
+    <div class="chart-card"><div class="ctitle">G3 — Forta [kg]</div><canvas id="lkg2"></canvas></div>
+    <div class="chart-card"><div class="ctitle">G4 — Forta [kg]</div><canvas id="lkg3"></canvas></div>
   </div>
 
-  <!-- Grafice Deformatie ε — 2 pe rand -->
   <div class="section-title" style="margin-top:16px">Grafice deformatie live [με]</div>
   <div class="charts-2col">
-    <div class="chart-card">
-      <div class="ctitle">G1 — Deformatie [με]</div>
-      <canvas id="leps0"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="ctitle">G2 — Deformatie [με]</div>
-      <canvas id="leps1"></canvas>
-    </div>
+    <div class="chart-card"><div class="ctitle">G1 — Deformatie [με]</div><canvas id="leps0"></canvas></div>
+    <div class="chart-card"><div class="ctitle">G2 — Deformatie [με]</div><canvas id="leps1"></canvas></div>
   </div>
   <div class="charts-2col">
-    <div class="chart-card">
-      <div class="ctitle">G3 — Deformatie [με]</div>
-      <canvas id="leps2"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="ctitle">G4 — Deformatie [με]</div>
-      <canvas id="leps3"></canvas>
-    </div>
+    <div class="chart-card"><div class="ctitle">G3 — Deformatie [με]</div><canvas id="leps2"></canvas></div>
+    <div class="chart-card"><div class="ctitle">G4 — Deformatie [με]</div><canvas id="leps3"></canvas></div>
   </div>
 
-  <!-- Mediu -->
   <div class="section-title" style="margin-top:16px">Mediu</div>
   <div class="env-row">
-    <div class="chart-card">
-      <div class="ctitle">Temperatura [°C]</div>
-      <canvas id="ltmp"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="ctitle">Umiditate [%]</div>
-      <canvas id="lhum"></canvas>
-    </div>
+    <div class="chart-card"><div class="ctitle">Temperatura [°C]</div><canvas id="ltmp"></canvas></div>
+    <div class="chart-card"><div class="ctitle">Umiditate [%]</div><canvas id="lhum"></canvas></div>
   </div>
-
 </div>
 
-<!-- ══════════ ISTORIC ══════════ -->
+<!-- ISTORIC -->
 <div class="tab-content" id="istoric">
   <div class="section-title">Istoric forta pe grinzi</div>
   <div class="hist-grid">
-    <div class="hist-card">
-      <div class="htitle">G1 — Forta [kg]</div>
-      <canvas id="hkg0"></canvas>
-    </div>
-    <div class="hist-card">
-      <div class="htitle">G2 — Forta [kg]</div>
-      <canvas id="hkg1"></canvas>
-    </div>
-    <div class="hist-card">
-      <div class="htitle">G3 — Forta [kg]</div>
-      <canvas id="hkg2"></canvas>
-    </div>
-    <div class="hist-card">
-      <div class="htitle">G4 — Forta [kg]</div>
-      <canvas id="hkg3"></canvas>
-    </div>
+    <div class="hist-card"><div class="htitle">G1 — Forta [kg]</div><canvas id="hkg0"></canvas></div>
+    <div class="hist-card"><div class="htitle">G2 — Forta [kg]</div><canvas id="hkg1"></canvas></div>
+    <div class="hist-card"><div class="htitle">G3 — Forta [kg]</div><canvas id="hkg2"></canvas></div>
+    <div class="hist-card"><div class="htitle">G4 — Forta [kg]</div><canvas id="hkg3"></canvas></div>
   </div>
 </div>
 
 <footer>Bridge Structural Monitor &mdash; HiveMQ Cloud &mdash; Live MQTT</footer>
 
 <script>
-// ── Config ────────────────────────────────────────────────────
-const MQTT_HOST   = 'wss://06ae2c4e327b455491f813127a666a8c.s1.eu.hivemq.cloud:8884/mqtt';
-const MQTT_USER   = 'esp32user';
-const MQTT_PASS   = 'Bridge123';
-const TOPIC       = 'bridge/data';
-const MAX_LIVE    = 60;   // puncte pe graficele live
-const MAX_HIST    = 300;  // puncte pe graficele istoric
-
-const ARIA   = 15.0426;
-const EKGF   = 2500 * 10.1972;
-const PRAG   = 20.0;
-
-// ── Culori grinzi ─────────────────────────────────────────────
+const MQTT_HOST = 'wss://06ae2c4e327b455491f813127a666a8c.s1.eu.hivemq.cloud:8884/mqtt';
+const MQTT_USER = 'esp32user';
+const MQTT_PASS = 'Bridge123';
+const TOPIC     = 'bridge/data';
+const MAX_LIVE  = 60;
+const MAX_HIST  = 300;
+const ARIA = 15.0426, EKGF = 2500*10.1972, PRAG = 20.0;
 const GCOLS = ['#58a6ff','#3fb950','#a78bfa','#f0883e'];
 
-// ── Tab switch ────────────────────────────────────────────────
-function switchTab(id, el) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+function switchTab(id,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
 }
 
-// ── Chart factory ─────────────────────────────────────────────
-function makeChart(id, color, label, maxY, lineWidth=1.5) {
-  const ctx = document.getElementById(id).getContext('2d');
-  return new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: Array(MAX_LIVE).fill(''),
-      datasets: [{
-        label, data: Array(MAX_LIVE).fill(null),
-        borderColor: color, backgroundColor: color+'22',
-        borderWidth: lineWidth, pointRadius: 0, fill: true,
-        tension: 0.3
-      }]
-    },
-    options: {
-      animation: false,
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { display: false },
-        y: {
-          min: 0, max: maxY,
-          grid: { color: '#21262d' },
-          ticks: { color: '#8b949e', font: { size: 10 }, maxTicksLimit: 4 }
-        }
-      }
-    }
+// Chart factory — maxY=null => autoscale
+function makeChart(id,color,label,maxY=null){
+  const ctx=document.getElementById(id).getContext('2d');
+  const yOpts={min:0,grid:{color:'#21262d'},ticks:{color:'#8b949e',font:{size:10},maxTicksLimit:4}};
+  if(maxY!==null) yOpts.max=maxY;
+  return new Chart(ctx,{
+    type:'line',
+    data:{labels:Array(MAX_LIVE).fill(''),datasets:[{label,data:Array(MAX_LIVE).fill(null),borderColor:color,backgroundColor:color+'22',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},
+    options:{animation:false,responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{display:false},y:yOpts}}
   });
 }
 
-function makeHistChart(id, color, label) {
-  const ctx = document.getElementById(id).getContext('2d');
-  return new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: [{
-        label, data: [],
-        borderColor: color, backgroundColor: color+'22',
-        borderWidth: 1.5, pointRadius: 0, fill: true, tension: 0.3
-      }]
-    },
-    options: {
-      animation: false,
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxTicksLimit: 6 }, grid: { color: '#21262d' } },
-        y: { min: 0, grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { size: 10 }, maxTicksLimit: 4 } }
-      }
-    }
+function makeHistChart(id,color,label){
+  const ctx=document.getElementById(id).getContext('2d');
+  return new Chart(ctx,{
+    type:'line',
+    data:{labels:[],datasets:[{label,data:[],borderColor:color,backgroundColor:color+'22',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},
+    options:{animation:false,responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8b949e',font:{size:9},maxTicksLimit:6},grid:{color:'#21262d'}},y:{min:0,grid:{color:'#21262d'},ticks:{color:'#8b949e',font:{size:10},maxTicksLimit:4}}}}
   });
 }
 
-// ── Creare grafice live ───────────────────────────────────────
-const lkgCharts  = [];
-const lepsCharts = [];
-for (let i = 0; i < 4; i++) {
-  lkgCharts.push(makeChart('lkg'+i,  GCOLS[i], 'G'+(i+1)+' kg',  25));
-  lepsCharts.push(makeChart('leps'+i, GCOLS[i], 'G'+(i+1)+' με', 200));
+// Grafice live — FARA limita fixa pe Y
+const lkgCharts=[],lepsCharts=[];
+for(let i=0;i<4;i++){
+  lkgCharts.push(makeChart('lkg'+i,GCOLS[i],'G'+(i+1)+' kg'));     // autoscale
+  lepsCharts.push(makeChart('leps'+i,GCOLS[i],'G'+(i+1)+' με'));   // autoscale
 }
-const tmpChart = makeChart('ltmp', '#58a6ff', 'Temp °C', 60);
-const humChart = makeChart('lhum', '#3fb950', 'Umid %',  100);
+const tmpChart=makeChart('ltmp','#58a6ff','Temp °C',60);
+const humChart=makeChart('lhum','#3fb950','Umid %',100);
 
-// ── Creare grafice istoric ────────────────────────────────────
-const hkgCharts = [];
-for (let i = 0; i < 4; i++) {
-  hkgCharts.push(makeHistChart('hkg'+i, GCOLS[i], 'G'+(i+1)+' kg'));
-}
+const hkgCharts=[];
+for(let i=0;i<4;i++) hkgCharts.push(makeHistChart('hkg'+i,GCOLS[i],'G'+(i+1)+' kg'));
 
-// ── Push data helper ──────────────────────────────────────────
-function pushLive(chart, val, maxLen = MAX_LIVE) {
+function pushLive(chart,val){
   chart.data.datasets[0].data.push(val);
-  if (chart.data.datasets[0].data.length > maxLen)
-    chart.data.datasets[0].data.shift();
-  chart.data.labels = Array(chart.data.datasets[0].data.length).fill('');
+  if(chart.data.datasets[0].data.length>MAX_LIVE) chart.data.datasets[0].data.shift();
+  chart.data.labels=Array(chart.data.datasets[0].data.length).fill('');
+  chart.update('none');
+}
+function pushHist(chart,val,lbl){
+  chart.data.labels.push(lbl);
+  chart.data.datasets[0].data.push(val);
+  if(chart.data.labels.length>MAX_HIST){chart.data.labels.shift();chart.data.datasets[0].data.shift();}
   chart.update('none');
 }
 
-function pushHist(chart, val, timeLabel) {
-  chart.data.labels.push(timeLabel);
-  chart.data.datasets[0].data.push(val);
-  if (chart.data.labels.length > MAX_HIST) {
-    chart.data.labels.shift();
-    chart.data.datasets[0].data.shift();
-  }
-  chart.update('none');
-}
-
-// ── Culoare per valoare ───────────────────────────────────────
-function kgColor(kg) {
-  if (kg >= PRAG)   return '#f85149';
-  if (kg >= 8)      return '#f0883e';
-  if (kg >= 3)      return '#d29922';
+function kgColor(kg){
+  if(kg>=PRAG) return '#f85149';
+  if(kg>=8)    return '#f0883e';
+  if(kg>=3)    return '#d29922';
   return '#3fb950';
 }
 
-// ── Update SVG sageti ─────────────────────────────────────────
-function updateArrow(idx, kg) {
-  const arr = document.getElementById('arr'+idx);
-  if (!arr) return;
-  const col = kgColor(kg);
-  arr.setAttribute('stroke', col);
-  // Lungime sageata proportionala cu kg (max 20px la PRAG)
-  const len = Math.min(18, kg / PRAG * 18);
-  arr.setAttribute('y1', 28 - len);
-  arr.setAttribute('x1', 60); arr.setAttribute('x2', 60); arr.setAttribute('y2', 28);
-  // Schimba culoarea marker-ului (recreare simpla)
-  arr.setAttribute('stroke', col);
+function updateArrow(idx,kg){
+  const arr=document.getElementById('arr'+idx);
+  if(!arr) return;
+  const col=kgColor(kg);
+  const len=Math.min(18,kg/PRAG*18);
+  arr.setAttribute('stroke',col);
+  arr.setAttribute('y1',28-len);
+  arr.setAttribute('x1',60);arr.setAttribute('x2',60);arr.setAttribute('y2',28);
 }
 
-// ── Update UI ────────────────────────────────────────────────
-function updateUI(d) {
-  const now = new Date().toLocaleTimeString();
+function updateUI(d){
+  const now=new Date().toLocaleTimeString();
+  const totKg=parseFloat(d.kg)||0;
+  const sig=parseFloat(d.sigma)||0;
+  const eps=parseFloat(d.epsilon)||0;
+  const temp=parseFloat(d.temp)||0;
+  const hum=parseFloat(d.hum)||0;
+  const col=kgColor(totKg);
 
-  // KPI
-  const totKg = parseFloat(d.kg) || 0;
-  const sig   = parseFloat(d.sigma) || 0;
-  const eps   = parseFloat(d.epsilon) || 0;
-  const temp  = parseFloat(d.temp) || 0;
-  const hum   = parseFloat(d.hum) || 0;
+  document.getElementById('kpiKg').textContent=totKg.toFixed(3)+' kg';
+  document.getElementById('kpiKg').style.color=col;
+  document.getElementById('kpiSigma').textContent=sig.toFixed(5)+' kgF/cm²';
+  document.getElementById('kpiEps').textContent=eps.toFixed(3)+' με';
+  document.getElementById('kpiTemp').textContent=temp.toFixed(1)+' °C';
+  document.getElementById('kpiHum').textContent=hum.toFixed(0)+' %';
+  document.getElementById('alarmBanner').style.display=totKg>=PRAG?'block':'none';
 
-  const col = kgColor(totKg);
-  document.getElementById('kpiKg').textContent = totKg.toFixed(3) + ' kg';
-  document.getElementById('kpiKg').style.color = col;
-  document.getElementById('kpiSigma').textContent = sig.toFixed(5) + ' kgF/cm²';
-  document.getElementById('kpiEps').textContent = eps.toFixed(3) + ' με';
-  document.getElementById('kpiTemp').textContent = temp.toFixed(1) + ' °C';
-  document.getElementById('kpiHum').textContent = hum.toFixed(0) + ' %';
-
-  // Alarma banner
-  document.getElementById('alarmBanner').style.display = totKg >= PRAG ? 'block' : 'none';
-
-  // Per grinda
-  const gVals = [
-    parseFloat(d.g1) || 0,
-    parseFloat(d.g2) || 0,
-    parseFloat(d.g3) || 0,
-    parseFloat(d.g4) || 0
-  ];
-
-  for (let i = 0; i < 4; i++) {
-    const kg = gVals[i];
-    const gCol = kgColor(kg);
-    // Calcul epsilon per grinda (σ = kg/ARIA, ε = σ/E * 1e6)
-    const gSig = kg / ARIA;
-    const gEps = (gSig / EKGF) * 1e6;
-
-    // Card border color
-    document.getElementById('bc'+i).style.borderColor = gCol;
-    // Valori text
-    document.getElementById('bv'+i).textContent = kg.toFixed(2) + ' kg';
-    document.getElementById('bv'+i).style.color = gCol;
-    document.getElementById('be'+i).textContent = 'ε = ' + gEps.toFixed(3) + ' με';
-    // SVG sageti
-    updateArrow(i, kg);
-
-    // Grafice live
-    pushLive(lkgCharts[i], kg);
-    pushLive(lepsCharts[i], gEps);
-
-    // Grafice istoric
-    pushHist(hkgCharts[i], kg, now);
+  const gVals=[parseFloat(d.g1)||0,parseFloat(d.g2)||0,parseFloat(d.g3)||0,parseFloat(d.g4)||0];
+  for(let i=0;i<4;i++){
+    const kg=gVals[i];
+    const gCol=kgColor(kg);
+    const gEps=(kg/ARIA/EKGF)*1e6;
+    document.getElementById('bc'+i).style.borderColor=gCol;
+    document.getElementById('bv'+i).textContent=kg.toFixed(2)+' kg';
+    document.getElementById('bv'+i).style.color=gCol;
+    document.getElementById('be'+i).textContent='ε = '+gEps.toFixed(3)+' με';
+    updateArrow(i,kg);
+    pushLive(lkgCharts[i],kg);
+    pushLive(lepsCharts[i],gEps);
+    pushHist(hkgCharts[i],kg,now);
   }
-
-  // Mediu
-  pushLive(tmpChart, temp);
-  pushLive(humChart, hum);
-
-  document.getElementById('lastUpd').textContent = 'Upd: ' + now;
+  pushLive(tmpChart,temp);
+  pushLive(humChart,hum);
+  document.getElementById('lastUpd').textContent='Upd: '+now;
 }
 
-// ── MQTT ─────────────────────────────────────────────────────
-const dot  = document.getElementById('mqttDot');
-const lbl  = document.getElementById('mqttLbl');
-
-const client = mqtt.connect(MQTT_HOST, {
-  username: MQTT_USER,
-  password: MQTT_PASS,
-  clientId: 'web-' + Math.random().toString(16).slice(2,8),
-  reconnectPeriod: 3000,
-  connectTimeout: 10000
-});
-
-client.on('connect', () => {
-  dot.classList.add('on');
-  lbl.textContent = 'MQTT: OK';
-  client.subscribe(TOPIC);
-});
-
-client.on('disconnect', () => {
-  dot.classList.remove('on');
-  lbl.textContent = 'MQTT: --';
-});
-
-client.on('error', () => {
-  dot.classList.remove('on');
-  lbl.textContent = 'MQTT: ERR';
-});
-
-client.on('message', (topic, payload) => {
-  try {
-    const d = JSON.parse(payload.toString());
-    updateUI(d);
-  } catch(e) {
-    console.warn('JSON parse error:', e);
-  }
-});
+const dot=document.getElementById('mqttDot');
+const lbl=document.getElementById('mqttLbl');
+const client=mqtt.connect(MQTT_HOST,{username:MQTT_USER,password:MQTT_PASS,clientId:'web-'+Math.random().toString(16).slice(2,8),reconnectPeriod:3000,connectTimeout:10000});
+client.on('connect',()=>{dot.classList.add('on');lbl.textContent='MQTT: OK';client.subscribe(TOPIC);});
+client.on('disconnect',()=>{dot.classList.remove('on');lbl.textContent='MQTT: --';});
+client.on('error',()=>{dot.classList.remove('on');lbl.textContent='MQTT: ERR';});
+client.on('message',(topic,payload)=>{try{updateUI(JSON.parse(payload.toString()));}catch(e){console.warn(e);}});
 </script>
 </body>
 </html>
